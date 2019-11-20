@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace ConsoleRpg
 {
@@ -45,6 +45,27 @@ namespace ConsoleRpg
             else
             {
                 Console.WriteLine($"Enemy named {enemy.Name} tried to attack me, but he's dead already. My hp is still at {Hp}.");
+            }
+        }
+
+        public void Hit(List<Character> enemies)
+        {
+            Character enemy = enemies.FirstOrDefault(character => character.IsAlive);
+
+            if (enemy == null)
+            {
+                Console.WriteLine($"All enemies of {Name} are dead.");
+                return;
+            }
+
+            if (IsAlive)
+            {
+                enemy.Hp -= Dmg;
+                Console.WriteLine($"{Name} attacked {enemy.Name} dealing {Dmg}. {enemy.Name} hp is now at {enemy.Hp}");
+            }
+            else
+            {
+                Console.WriteLine($"{Name} tried to attack {enemy.Name}, but {Name} is already dead.");
             }
         }
     }

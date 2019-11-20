@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ConsoleRpg
 {
@@ -6,27 +7,33 @@ namespace ConsoleRpg
     {
         static void Main(string[] args)
         {
-            Character me = new Character
-            {
-                Name = "Snooking",
-                Dmg = 4,
-                Hp = 14
-            };
+            DataContext dataContext = new DataContext();
 
-            Character enemy = new Character
+            foreach (Character character in dataContext.Characters)
             {
-                Name = "zombie",
-                Dmg = 3,
-                Hp = 9
-            };
+                character.Introduce();
+            }
 
-            me.Introduce();
-            enemy.Introduce();
-
-            while (me.IsAlive && enemy.IsAlive)
+            foreach (Character enemy in dataContext.Enemies)
             {
-                enemy.GetHit(me);
-                me.GetHit(enemy);
+                enemy.Introduce();
+            }
+
+
+            while (dataContext.Characters.Any(character => character.IsAlive)
+                && dataContext.Enemies.Any(enemy => enemy.IsAlive))
+            {
+                foreach (Character character in dataContext.Characters)
+                {
+                    character.Hit(dataContext.Enemies);
+                }
+                Console.WriteLine();
+
+                foreach (Character enemy in dataContext.Enemies)
+                {
+                    enemy.Hit(dataContext.Characters);
+                }
+                Console.WriteLine();
             }
 
             Console.ReadLine();
