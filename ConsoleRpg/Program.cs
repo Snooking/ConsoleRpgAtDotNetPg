@@ -9,27 +9,26 @@ namespace ConsoleRpg
         {
             DataContext dataContext = new DataContext();
 
-            foreach (Character character in dataContext.Characters)
+            foreach (Entity character in dataContext.Characters)
             {
                 character.Introduce();
             }
 
-            foreach (Character enemy in dataContext.Enemies)
+            foreach (Entity enemy in dataContext.Enemies)
             {
                 enemy.Introduce();
             }
 
-
             while (dataContext.Characters.Any(character => character.IsAlive)
                 && dataContext.Enemies.Any(enemy => enemy.IsAlive))
             {
-                foreach (Character character in dataContext.Characters)
+                foreach (Entity character in dataContext.Characters)
                 {
                     character.Hit(dataContext.Enemies);
                 }
                 Console.WriteLine();
 
-                foreach (Character enemy in dataContext.Enemies)
+                foreach (Entity enemy in dataContext.Enemies)
                 {
                     enemy.Hit(dataContext.Characters);
                 }

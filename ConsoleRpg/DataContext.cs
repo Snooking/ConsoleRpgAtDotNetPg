@@ -4,36 +4,38 @@ namespace ConsoleRpg
 {
     class DataContext
     {
-        public List<Character> Characters { get; set; }
-        public List<Character> Enemies { get; set; }
+        public List<Entity> Characters { get; set; }
+        public List<Entity> Enemies { get; set; }
 
         public DataContext()
         {
-            Characters = new List<Character>
+            Characters = new List<Entity>
             {
-                new Character
+                new Character()
                 {
                     Name = "Snooking",
                     Dmg = 4,
-                    Hp = 14
+                    Hp = 14,
+                    Mana = 6
                 },
-                new Character
+                new Character()
                 {
                     Name = "Huzdy",
                     Dmg = 5,
-                    Hp = 11
+                    Hp = 11,
+                    Mana = 8
                 }
             };
 
-            Enemies = new List<Character>
+            Enemies = new List<Entity>
             {
-                new Character
+                new Enemy()
                 {
                     Name = "zombie",
                     Dmg = 3,
                     Hp = 9
                 },
-                new Character
+                new Enemy()
                 {
                     Name = "skeleton",
                     Dmg = 2,

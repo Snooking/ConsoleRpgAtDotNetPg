@@ -1,72 +1,71 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleRpg
 {
-    class Character
+    public class Character : Entity
     {
-        public string Name { get; set; }
-        public int Dmg { get; set; }
-        public int Hp { get; set; }
-        public bool IsAlive
+        public override void Hit(List<Entity> enemies)
         {
-            get
+            if (enemies == null)
             {
-                return Hp > 0;
-            }
-        }
-
-        public void Introduce()
-        {
-            Console.WriteLine($"Hi, my name is {Name}. My dmg is {Dmg} and my hp is {Hp}.");
-        }
-
-        public void GetHit(int dmg, bool isEnemyAlive, string enemyName)
-        {
-            if (isEnemyAlive)
-            {
-                Hp -= dmg;
-                Console.WriteLine($"{Name} got hit for {dmg} dmg. My hp is at {Hp} and am I alive? {IsAlive}.");
-            }
-            else
-            {
-                Console.WriteLine($"Enemy named {enemyName} tried to attack me, but he's dead already. My hp is still at {Hp}.");
-            }
-        }
-
-        public void GetHit(Character enemy)
-        {
-            if (enemy.IsAlive)
-            {
-                Hp -= enemy.Dmg;
-                Console.WriteLine($"{Name} got hit for {enemy.Dmg} dmg. My hp is at {Hp} and am I alive? {IsAlive}.");
-            }
-            else
-            {
-                Console.WriteLine($"Enemy named {enemy.Name} tried to attack me, but he's dead already. My hp is still at {Hp}.");
-            }
-        }
-
-        public void Hit(List<Character> enemies)
-        {
-            Character enemy = enemies.FirstOrDefault(character => character.IsAlive);
-
-            if (enemy == null)
-            {
-                Console.WriteLine($"All enemies of {Name} are dead.");
                 return;
             }
 
-            if (IsAlive)
+            List<Entity> aliveEnemies = enemies.Where(enemy => enemy.IsAlive).ToList();
+
+            for (int i = 0; i < aliveEnemies.Count; i++)
             {
-                enemy.Hp -= Dmg;
-                Console.WriteLine($"{Name} attacked {enemy.Name} dealing {Dmg}. {enemy.Name} hp is now at {enemy.Hp}");
+                Console.Write($"{i + 1}. ");
+                aliveEnemies[i].Introduce();
+            }
+
+            Console.WriteLine("Who do you want to hit?");
+            int enemySelection = SelectEnemy(aliveEnemies.Count);
+
+            
+            Console.WriteLine("Do you want to use special ability? Y/N");
+            bool isSpecialAbility = IsSpecialAbility();
+            
+            Hit(aliveEnemies[enemySelection - 1], isSpecialAbility);
+        }
+
+        public override void UseSpecialAbility(Entity entity)
+        {
+            if (Mana >= 5)
+            {
+                Mana -= 5;
+                entity.Hp -= SpecialAbilityDmg;
+                Console.WriteLine($"{Name} hit enemy with special ability dealing {SpecialAbilityDmg}");
             }
             else
             {
-                Console.WriteLine($"{Name} tried to attack {enemy.Name}, but {Name} is already dead.");
+                Console.WriteLine($"{Name} doesn't have enough mana to use special ability");
             }
+        }
+
+        private int SelectEnemy(int selectionLimit)
+        {
+            int selection;
+
+            while (!int.TryParse(Console.ReadLine(), out selection) || selection < 1 || selection > selectionLimit)
+            {
+                Console.WriteLine("Select again...");
+            }
+
+            return selection;
+        }
+
+        private bool IsSpecialAbility()
+        {
+            char selection;
+            while (!char.TryParse(Console.ReadLine(), out selection) || selection != 'Y' && selection != 'N')
+            {
+                Console.WriteLine("Select again...");
+            }
+
+            return selection == 'Y';
         }
     }
 }

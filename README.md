@@ -6,3 +6,6 @@ link with explanation: https://hackmd.io/a5tlxDcPQPSX0TYnDmEDCQ
 
 002 - Introduced DataContext, Lists, Constructors, Linq with Lambda
 Link with explanation: https://hackmd.io/6PuEJL6-TGyafCBiloJeYQ
+
+003 - Introduced inheritance, virtual + override, out, loops, optional parameters
+Link with explanation: https://hackmd.io/@therrlupardo/Sy716YF2r
