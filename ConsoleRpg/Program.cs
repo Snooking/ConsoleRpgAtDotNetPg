@@ -1,36 +1,35 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 
 namespace ConsoleRpg
 {
     class Program
     {
+        public static DataContext DataContext { get; set; } = new DataContext();
+
         static void Main(string[] args)
         {
-            DataContext dataContext = new DataContext();
-
-            foreach (Entity character in dataContext.Characters)
+            foreach (var entity in DataContext.Characters.Concat(DataContext.Enemies))
             {
-                character.Introduce();
+                entity.Introduce();
             }
 
-            foreach (Entity enemy in dataContext.Enemies)
-            {
-                enemy.Introduce();
-            }
+            bool IsAnyCharacterAndEnemyAlive() => DataContext.Characters.Any(character => character.IsAlive)
+                                                  && DataContext.Enemies.Any(enemy => enemy.IsAlive);
 
-            while (dataContext.Characters.Any(character => character.IsAlive)
-                && dataContext.Enemies.Any(enemy => enemy.IsAlive))
+
+            while (IsAnyCharacterAndEnemyAlive())
             {
-                foreach (Entity character in dataContext.Characters)
+                foreach (Character character in DataContext.Characters)
                 {
-                    character.Hit(dataContext.Enemies);
+                    character.ChooseAction();
                 }
                 Console.WriteLine();
 
-                foreach (Entity enemy in dataContext.Enemies)
+                foreach (Entity enemy in DataContext.Enemies)
                 {
-                    enemy.Hit(dataContext.Characters);
+                    enemy.Hit(DataContext.Characters);
                 }
                 Console.WriteLine();
             }

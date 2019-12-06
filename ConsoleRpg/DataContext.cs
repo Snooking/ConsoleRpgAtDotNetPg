@@ -11,35 +11,45 @@ namespace ConsoleRpg
         {
             Characters = new List<Entity>
             {
-                new Character()
+                new Character
                 {
                     Name = "Snooking",
                     Dmg = 4,
                     Hp = 14,
-                    Mana = 6
+                    Mana = 10,
+                    EquippedWeapon = new Weapon{ DmgBonus = 3},
+                    DataContext = this,
+                    ItemBag = new []
+                    {
+                        new Potion{HpRestored = 3, ManaRestored = 0},
+                        new Potion{HpRestored = 3, ManaRestored = 2},
+                        new Potion{HpRestored = 3, ManaRestored = 1}
+                    }
                 },
-                new Character()
+                new Character
                 {
                     Name = "Huzdy",
                     Dmg = 5,
                     Hp = 11,
-                    Mana = 8
+                    Mana = 8,
+                    DataContext = this
                 }
             };
 
             Enemies = new List<Entity>
             {
-                new Enemy()
+                new Enemy
                 {
                     Name = "zombie",
                     Dmg = 3,
                     Hp = 9
                 },
-                new Enemy()
+                new Enemy
                 {
                     Name = "skeleton",
                     Dmg = 2,
-                    Hp = 11
+                    Hp = 11,
+                    EquippedWeapon = new Weapon{ DmgBonus = 3 }
                 }
             };
         }
