@@ -1,7 +1,6 @@
-namespace ConsoleRpg
+﻿namespace ConsoleRpg
 {
-    public class Enemy : Entity
+    class Enemy : Entity
     {
-        
     }
 }
